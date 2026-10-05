@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import emailjs from '@emailjs/browser';
 import { ArrowRight, Mail, Phone, MapPin, MessageCircle, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
 
@@ -54,34 +53,7 @@ export const ContactPage: React.FC = () => {
       console.warn('[Web3Forms Error]:', web3Err?.message);
     }
 
-    // 2. Also dispatch via EmailJS
-    try {
-      const templateParams = {
-        name: formData.name,
-        phone: formData.phone,
-        email: formData.email,
-        service: formData.service,
-        budget: formData.budget,
-        project_details: formData.details,
-        user_name: formData.name,
-        user_email: formData.email,
-        message: formData.details,
-      };
-
-      await emailjs.send(
-        'service_6mwyd7s',
-        'template_mxxjcrd',
-        templateParams,
-        {
-          publicKey: 'AY_uxf5H-C4dITuNT',
-        }
-      );
-      console.log('[EmailJS] Inquiry sent successfully!');
-    } catch (emailErr: any) {
-      console.warn('[EmailJS Notice]:', emailErr?.text || emailErr?.message);
-    }
-
-    // 2. Also persist inquiry to MongoDB Atlas database for Admin Panel tracking
+    // 2. Persist inquiry to MongoDB Atlas database for Admin Panel tracking
     try {
       const response = await fetch('http://localhost:5000/api/inquiries', {
         method: 'POST',
@@ -306,7 +278,7 @@ export const ContactPage: React.FC = () => {
                     {loading ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        Sending Inquiry via EmailJS...
+                        Sending Inquiry...
                       </>
                     ) : (
                       <>
