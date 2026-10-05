@@ -17,7 +17,7 @@ connectDB();
 // Middlewares
 app.use(
   cors({
-    origin: '*', // Allow frontend client connections
+    origin: true, // Dynamically reflects origin so external frontend hosts (Vercel, Netlify, custom domain) can connect
     credentials: true,
   })
 );
