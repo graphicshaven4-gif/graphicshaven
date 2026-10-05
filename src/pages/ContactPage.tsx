@@ -26,7 +26,35 @@ export const ContactPage: React.FC = () => {
     setLoading(true);
     setErrorMessage('');
 
-    // 1. Dispatch Email directly via EmailJS using explicit templateParams
+    // 1. Dispatch Email directly via Web3Forms
+    try {
+      const web3FormData = new FormData();
+      web3FormData.append('access_key', '06b9f5de-3d33-4366-9eb6-f284ccc32f67');
+      web3FormData.append('name', formData.name);
+      web3FormData.append('email', formData.email);
+      web3FormData.append('phone', formData.phone || 'Not provided');
+      web3FormData.append('service', formData.service || 'General Inquiry');
+      web3FormData.append('budget', formData.budget || 'Flexible');
+      web3FormData.append('message', formData.details || 'No details provided');
+      web3FormData.append('subject', `New Project Inquiry from ${formData.name}`);
+      web3FormData.append('from_name', 'Graphics Haven Studio');
+
+      const web3Res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: web3FormData,
+      });
+
+      const web3Data = await web3Res.json();
+      if (web3Data.success) {
+        console.log('[Web3Forms] Email dispatched successfully!');
+      } else {
+        console.warn('[Web3Forms Notice]:', web3Data.message);
+      }
+    } catch (web3Err: any) {
+      console.warn('[Web3Forms Error]:', web3Err?.message);
+    }
+
+    // 2. Also dispatch via EmailJS
     try {
       const templateParams = {
         name: formData.name,
@@ -35,7 +63,6 @@ export const ContactPage: React.FC = () => {
         service: formData.service,
         budget: formData.budget,
         project_details: formData.details,
-        // Helpful fallbacks in case template uses message/user_name
         user_name: formData.name,
         user_email: formData.email,
         message: formData.details,
