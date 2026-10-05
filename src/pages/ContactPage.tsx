@@ -26,19 +26,30 @@ export const ContactPage: React.FC = () => {
     setLoading(true);
     setErrorMessage('');
 
-    // 1. Dispatch Email directly via EmailJS
+    // 1. Dispatch Email directly via EmailJS using explicit templateParams
     try {
-      if (formRef.current) {
-        await emailjs.sendForm(
-          'service_6mwyd7s',
-          'template_mxxjcrd',
-          formRef.current,
-          {
-            publicKey: 'AY_uxf5H-C4dITuNT',
-          }
-        );
-        console.log('[EmailJS] Inquiry sent successfully!');
-      }
+      const templateParams = {
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        service: formData.service,
+        budget: formData.budget,
+        project_details: formData.details,
+        // Helpful fallbacks in case template uses message/user_name
+        user_name: formData.name,
+        user_email: formData.email,
+        message: formData.details,
+      };
+
+      await emailjs.send(
+        'service_6mwyd7s',
+        'template_mxxjcrd',
+        templateParams,
+        {
+          publicKey: 'AY_uxf5H-C4dITuNT',
+        }
+      );
+      console.log('[EmailJS] Inquiry sent successfully!');
     } catch (emailErr: any) {
       console.warn('[EmailJS Notice]:', emailErr?.text || emailErr?.message);
     }
