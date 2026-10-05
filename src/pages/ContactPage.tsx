@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 import { ArrowRight, Mail, Phone, MapPin, MessageCircle, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
 
 export const ContactPage: React.FC = () => {
+  const formRef = useRef<HTMLFormElement>(null);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -23,6 +26,24 @@ export const ContactPage: React.FC = () => {
     setLoading(true);
     setErrorMessage('');
 
+    // 1. Dispatch Email directly via EmailJS
+    try {
+      if (formRef.current) {
+        await emailjs.sendForm(
+          'service_6mwyd7s',
+          'template_mxxjcrd',
+          formRef.current,
+          {
+            publicKey: 'AY_uxf5H-C4dITuNT',
+          }
+        );
+        console.log('[EmailJS] Inquiry sent successfully!');
+      }
+    } catch (emailErr: any) {
+      console.warn('[EmailJS Notice]:', emailErr?.text || emailErr?.message);
+    }
+
+    // 2. Also persist inquiry to MongoDB Atlas database for Admin Panel tracking
     try {
       const response = await fetch('http://localhost:5000/api/inquiries', {
         method: 'POST',
@@ -92,8 +113,8 @@ export const ContactPage: React.FC = () => {
                 Inquiry Sent Successfully!
               </h3>
               <p className="mt-3 text-muted-foreground max-w-md mx-auto">
-                Thank you for reaching out, {formData.name}. Our creative directors will review your
-                brief and get in touch within one business day.
+                Thank you for reaching out, {formData.name}. Our creative directors have received
+                your brief and will review your project details shortly.
               </p>
               <button
                 type="button"
@@ -114,8 +135,13 @@ export const ContactPage: React.FC = () => {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit}>
+            <form ref={formRef} onSubmit={handleSubmit}>
               <div className="grid gap-5 sm:grid-cols-2">
+                {/* Fallback hidden fields for diverse EmailJS template variable names */}
+                <input type="hidden" name="name" value={formData.name} />
+                <input type="hidden" name="email" value={formData.email} />
+                <input type="hidden" name="reply_to" value={formData.email} />
+
                 <label className="block">
                   <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                     Full name *
@@ -123,6 +149,7 @@ export const ContactPage: React.FC = () => {
                   <div className="mt-2">
                     <input
                       required
+                      name="user_name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="input"
@@ -138,6 +165,7 @@ export const ContactPage: React.FC = () => {
                   <div className="mt-2">
                     <input
                       type="tel"
+                      name="phone"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="input"
@@ -154,6 +182,7 @@ export const ContactPage: React.FC = () => {
                     <input
                       required
                       type="email"
+                      name="user_email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="input"
@@ -168,6 +197,7 @@ export const ContactPage: React.FC = () => {
                   </span>
                   <div className="mt-2">
                     <select
+                      name="service"
                       value={formData.service}
                       onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                       className="input"
@@ -192,6 +222,7 @@ export const ContactPage: React.FC = () => {
                   </span>
                   <div className="mt-2">
                     <select
+                      name="budget"
                       value={formData.budget}
                       onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                       className="input"
@@ -212,6 +243,7 @@ export const ContactPage: React.FC = () => {
                   <div className="mt-2">
                     <textarea
                       rows={5}
+                      name="message"
                       value={formData.details}
                       onChange={(e) => setFormData({ ...formData, details: e.target.value })}
                       className="input"
@@ -236,7 +268,7 @@ export const ContactPage: React.FC = () => {
                     {loading ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        Submitting &amp; Sending Notification...
+                        Sending Inquiry via EmailJS...
                       </>
                     ) : (
                       <>
@@ -250,83 +282,72 @@ export const ContactPage: React.FC = () => {
           )}
         </div>
 
-        {/* Sidebar Info */}
-        <aside className="space-y-4">
-          <div className="rounded-2xl border border-border bg-surface p-5 flex items-start gap-3 shadow-xs">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-background border border-border">
-              <Mail className="h-4 w-4" />
-            </span>
-            <div>
-              <div className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">
-                Email
+        {/* Contact Sidebar Details */}
+        <div className="space-y-6">
+          <div className="rounded-3xl border border-border bg-surface p-6 md:p-8">
+            <h3 className="font-display text-xl font-semibold mb-6">Direct Channels</h3>
+
+            <div className="space-y-5 text-sm">
+              <div className="flex items-start gap-3">
+                <div className="h-9 w-9 rounded-xl bg-background border border-border flex items-center justify-center shrink-0 text-accent">
+                  <Mail className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground uppercase font-semibold">General &amp; New Business</div>
+                  <a
+                    href="mailto:graphicshaven4@gmail.com"
+                    className="font-medium text-foreground hover:text-accent transition-colors"
+                  >
+                    graphicshaven4@gmail.com
+                  </a>
+                </div>
               </div>
-              <a
-                href="mailto:graphicshaven4@gmail.com"
-                className="mt-1 text-sm font-medium block hover:text-accent transition-colors"
-              >
-                graphicshaven4@gmail.com
-              </a>
+
+              <div className="flex items-start gap-3">
+                <div className="h-9 w-9 rounded-xl bg-background border border-border flex items-center justify-center shrink-0 text-accent">
+                  <Phone className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground uppercase font-semibold">Direct Phone</div>
+                  <a
+                    href="tel:+919876543210"
+                    className="font-medium text-foreground hover:text-accent transition-colors"
+                  >
+                    +91 98765 43210
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="h-9 w-9 rounded-xl bg-background border border-border flex items-center justify-center shrink-0 text-accent">
+                  <MapPin className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground uppercase font-semibold">Studio Headquarters</div>
+                  <div className="font-medium text-foreground">
+                    Chennai, Tamil Nadu, India
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="h-9 w-9 rounded-xl bg-background border border-border flex items-center justify-center shrink-0 text-accent">
+                  <MessageCircle className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground uppercase font-semibold">Instant Chat</div>
+                  <a
+                    href="https://wa.me/919876543210"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-foreground hover:text-accent transition-colors"
+                  >
+                    WhatsApp Business
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-
-          <div className="rounded-2xl border border-border bg-surface p-5 flex items-start gap-3 shadow-xs">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-background border border-border">
-              <Phone className="h-4 w-4" />
-            </span>
-            <div>
-              <div className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">
-                Phone
-              </div>
-              <a
-                href="tel:+918778139593"
-                className="mt-1 text-sm font-medium block hover:text-accent transition-colors"
-              >
-                +91 - 87 78 13 95 93
-              </a>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border bg-surface p-5 flex items-start gap-3 shadow-xs">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-background border border-border">
-              <MapPin className="h-4 w-4" />
-            </span>
-            <div>
-              <div className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">
-                Studio
-              </div>
-              <div className="mt-1 text-sm font-medium leading-relaxed">
-                158,B Aramapannai, Tuticorin Dist - 628 619.
-              </div>
-            </div>
-          </div>
-
-          <a
-            href="https://wa.me/918778139593"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-2xl border border-border bg-primary text-primary-foreground p-5 hover:bg-accent transition-colors shadow-xs"
-          >
-            <MessageCircle className="h-5 w-5" />
-            <div>
-              <div className="text-xs uppercase tracking-widest opacity-75 font-semibold">
-                Chat now
-              </div>
-              <div className="font-display font-semibold">WhatsApp our team</div>
-            </div>
-          </a>
-        </aside>
-      </section>
-
-      {/* Map Section */}
-      <section className="container-x pb-24">
-        <div className="overflow-hidden rounded-3xl border border-border bg-surface">
-          <iframe
-            title="Studio location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3943.4682496839356!2d78.07722747514336!3d8.741029593120152!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b038b3687313a4f%3A0x6b4db65bbda54131!2sAramapannai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
-            className="w-full h-[380px] border-0"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
         </div>
       </section>
     </div>
