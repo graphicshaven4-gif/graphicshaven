@@ -33,6 +33,17 @@ app.use((req, res, next) => {
   next();
 });
 
+// Root status endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    message: 'Graphics Haven Backend API is live & running',
+    version: '1.0.0',
+    health: '/api/health',
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // Health check route
 app.get('/api/health', (req, res) => {
   res.status(200).json({
@@ -105,12 +116,8 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 5000;
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {
-    console.log(`===============================================`);
-    console.log(`Graphics Haven Backend Server`);
+    console.log(`Graphics Haven Backend Server running`);
     console.log(`Status:  Running on http://localhost:${PORT}`);
-    console.log(`Auth:    http://localhost:${PORT}/api/auth/login`);
-    console.log(`         http://localhost:${PORT}/api/auth/register`);
-    console.log(`===============================================`);
   });
 }
 
