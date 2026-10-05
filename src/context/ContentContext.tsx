@@ -13,6 +13,7 @@ import {
   testimonialsData,
   blogPostsData,
 } from '../data/mockData';
+import { API_BASE_URL } from '../config/api';
 
 const defaultClients: ClientItem[] = clientLogos.map((c, i) => ({
   id: `client-${i + 1}`,
@@ -53,7 +54,7 @@ interface ContentContextType {
 
 const ContentContext = createContext<ContentContextType | undefined>(undefined);
 
-const API_BASE = 'http://localhost:5000/api/content';
+const API_BASE = `${API_BASE_URL}/api/content`;
 
 export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // 1. Services

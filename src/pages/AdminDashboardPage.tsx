@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
 import { ImageUpload } from '../components/ImageUpload';
+import { API_BASE_URL } from '../config/api';
 
 interface AdminDashboardPageProps {
   onLogout: () => void;
@@ -116,7 +117,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
   const fetchInquiries = async () => {
     setLoadingInquiries(true);
     try {
-      const res = await fetch('http://localhost:5000/api/inquiries');
+      const res = await fetch(`${API_BASE_URL}/api/inquiries`);
       if (res.ok) {
         const json = await res.json();
         if (json.success && Array.isArray(json.data)) {
@@ -146,7 +147,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
     showToast(`Inquiry status updated to ${newStatus}`);
 
     try {
-      await fetch(`http://localhost:5000/api/inquiries/${id}/status`, {
+      await fetch(`${API_BASE_URL}/api/inquiries/${id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus }),
@@ -163,7 +164,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
     showToast(`Inquiry deleted.`);
 
     try {
-      await fetch(`http://localhost:5000/api/inquiries/${id}`, {
+      await fetch(`${API_BASE_URL}/api/inquiries/${id}`, {
         method: 'DELETE',
       });
     } catch (e) {

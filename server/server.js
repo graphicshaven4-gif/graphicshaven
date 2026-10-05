@@ -103,11 +103,15 @@ app.use((req, res) => {
 
 // Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`===============================================`);
-  console.log(`Graphics Haven Backend Server`);
-  console.log(`Status:  Running on http://localhost:${PORT}`);
-  console.log(`Auth:    http://localhost:${PORT}/api/auth/login`);
-  console.log(`         http://localhost:${PORT}/api/auth/register`);
-  console.log(`===============================================`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`===============================================`);
+    console.log(`Graphics Haven Backend Server`);
+    console.log(`Status:  Running on http://localhost:${PORT}`);
+    console.log(`Auth:    http://localhost:${PORT}/api/auth/login`);
+    console.log(`         http://localhost:${PORT}/api/auth/register`);
+    console.log(`===============================================`);
+  });
+}
+
+module.exports = app;

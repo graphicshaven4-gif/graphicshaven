@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Upload, Loader2, CheckCircle2, AlertCircle, X, Link, Cloud } from 'lucide-react';
+import { API_BASE_URL } from '../config/api';
 
 interface ImageUploadProps {
   value: string;
@@ -41,7 +42,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     formData.append('image', file);
 
     try {
-      const res = await fetch('http://localhost:5000/api/upload/image', {
+      const res = await fetch(`${API_BASE_URL}/api/upload/image`, {
         method: 'POST',
         body: formData,
       });

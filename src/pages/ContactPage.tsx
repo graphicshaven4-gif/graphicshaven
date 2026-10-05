@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ArrowRight, Mail, Phone, MapPin, MessageCircle, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
+import { API_BASE_URL } from '../config/api';
 
 export const ContactPage: React.FC = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -55,7 +56,7 @@ export const ContactPage: React.FC = () => {
 
     // 2. Persist inquiry to MongoDB Atlas database for Admin Panel tracking
     try {
-      const response = await fetch('http://localhost:5000/api/inquiries', {
+      const response = await fetch(`${API_BASE_URL}/api/inquiries`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
