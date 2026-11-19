@@ -242,7 +242,7 @@ export const portfolioProjects: PortfolioProject[] = [
   {
     id: 'zina-logistics',
     title: 'Zina Logistics',
-    category: 'Social Media',
+    category: 'Advertising',
     year: '2023',
     description: 'High-contrast graphic templates, fleet livery reveal reels and corporate updates.',
     image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',

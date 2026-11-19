@@ -153,15 +153,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 Contact
               </a>
             </li>
-            <li>
-              <a
-                href="/admin"
-                onClick={(e) => handleNavClick('/admin', e)}
-                className="hover:text-accent font-medium transition-colors text-xs flex items-center gap-1"
-              >
-                Studio Admin ↗
-              </a>
-            </li>
           </ul>
         </div>
 
@@ -173,10 +164,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <a href="mailto:graphicshaven4@gmail.com">graphicshaven4@gmail.com</a>
             </li>
             <li className="hover:text-foreground transition-colors">
-              <a href="tel:+918778139593">+91 - 87 78 13 95 93</a>
+              <a href="tel:+919876543210">+91 98765 43210</a>
             </li>
             <li className="leading-relaxed">
-              158,B Aramapannai, Tuticorin Dist - 628 619.
+              312, al hanifa complex, mannadi, chennai.
             </li>
           </ul>
         </div>

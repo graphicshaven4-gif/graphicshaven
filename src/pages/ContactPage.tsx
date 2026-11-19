@@ -11,7 +11,6 @@ export const ContactPage: React.FC = () => {
     phone: '',
     email: '',
     service: '',
-    budget: '',
     details: '',
   });
 
@@ -26,6 +25,11 @@ export const ContactPage: React.FC = () => {
     setLoading(true);
     setErrorMessage('');
 
+    const payload = {
+      ...formData,
+      service: formData.service || 'General Inquiry',
+    };
+
     // 1. Dispatch Email directly via Web3Forms
     try {
       const web3FormData = new FormData();
@@ -34,7 +38,6 @@ export const ContactPage: React.FC = () => {
       web3FormData.append('email', formData.email);
       web3FormData.append('phone', formData.phone || 'Not provided');
       web3FormData.append('service', formData.service || 'General Inquiry');
-      web3FormData.append('budget', formData.budget || 'Flexible');
       web3FormData.append('message', formData.details || 'No details provided');
       web3FormData.append('subject', `New Project Inquiry from ${formData.name}`);
       web3FormData.append('from_name', 'Graphics Haven Studio');
@@ -61,7 +64,7 @@ export const ContactPage: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json();
@@ -72,7 +75,7 @@ export const ContactPage: React.FC = () => {
         const list = stored ? JSON.parse(stored) : [];
         const newRecord = result.data || {
           _id: `inq-${Date.now()}`,
-          ...formData,
+          ...payload,
           status: 'New',
           createdAt: new Date().toISOString(),
         };
@@ -89,7 +92,7 @@ export const ContactPage: React.FC = () => {
         const list = stored ? JSON.parse(stored) : [];
         const fallbackRecord = {
           _id: `inq-${Date.now()}`,
-          ...formData,
+          ...payload,
           status: 'New',
           createdAt: new Date().toISOString(),
         };
@@ -136,7 +139,6 @@ export const ContactPage: React.FC = () => {
                     phone: '',
                     email: '',
                     service: '',
-                    budget: '',
                     details: '',
                   });
                 }}
@@ -180,7 +182,7 @@ export const ContactPage: React.FC = () => {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="input"
-                      placeholder="+1 (555) 000-0000"
+                      placeholder="+91"
                     />
                   </div>
                 </label>
@@ -202,7 +204,7 @@ export const ContactPage: React.FC = () => {
                   </div>
                 </label>
 
-                <label className="block">
+                <label className="block sm:col-span-2">
                   <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                     Service
                   </span>
@@ -220,29 +222,8 @@ export const ContactPage: React.FC = () => {
                       <option>Website Design</option>
                       <option>Web Development</option>
                       <option>Advertising</option>
-                      <option>Motion Graphics</option>
                       <option>UI UX</option>
                       <option>Other</option>
-                    </select>
-                  </div>
-                </label>
-
-                <label className="block">
-                  <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    Budget
-                  </span>
-                  <div className="mt-2">
-                    <select
-                      name="budget"
-                      value={formData.budget}
-                      onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      className="input"
-                    >
-                      <option value="">Select budget</option>
-                      <option>&lt; $5k</option>
-                      <option>$5k – $15k</option>
-                      <option>$15k – $50k</option>
-                      <option>$50k+</option>
                     </select>
                   </div>
                 </label>
@@ -336,7 +317,7 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <div className="text-xs text-muted-foreground uppercase font-semibold">Studio Headquarters</div>
                   <div className="font-medium text-foreground">
-                    Chennai, Tamil Nadu, India
+                    312, al hanifa complex, mannadi, chennai.
                   </div>
                 </div>
               </div>

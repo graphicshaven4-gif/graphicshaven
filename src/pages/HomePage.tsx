@@ -120,47 +120,47 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   return (
     <div className="flex-1">
       {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden pt-8 md:pt-16 pb-20 md:pb-32">
+      <section className="relative overflow-hidden pt-6 sm:pt-8 md:pt-16 pb-12 sm:pb-20 md:pb-32">
         {/* Glow blur orbs */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-24 -left-32 h-[520px] w-[520px] rounded-full bg-accent/15 blur-3xl animate-blob"
+          className="pointer-events-none absolute -top-24 -left-32 h-[320px] w-[320px] sm:h-[520px] sm:w-[520px] rounded-full bg-accent/15 blur-3xl animate-blob"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute top-40 right-0 h-[420px] w-[420px] rounded-full bg-primary/5 blur-3xl animate-blob"
+          className="pointer-events-none absolute top-40 right-0 h-[280px] w-[280px] sm:h-[420px] sm:w-[420px] rounded-full bg-primary/5 blur-3xl animate-blob"
         />
 
-        <div className="container-x grid gap-14 lg:grid-cols-12 lg:gap-8 items-center">
+        <div className="container-x grid gap-10 lg:grid-cols-12 lg:gap-8 items-center">
           {/* Left Text Col */}
           <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3.5 py-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground shadow-xs">
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 sm:px-3.5 sm:py-1.5 text-[11px] sm:text-xs font-medium uppercase tracking-wider text-muted-foreground shadow-xs">
               <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
               Creative studio · Est. 2016
             </div>
 
-            <h1 className="mt-6 font-display text-4xl sm:text-6xl lg:text-[84px] leading-[1.04] sm:leading-[0.98] tracking-tight font-semibold text-balance">
+            <h1 className="mt-4 sm:mt-6 font-display text-3xl sm:text-5xl lg:text-[84px] leading-[1.1] sm:leading-[0.98] tracking-tight font-semibold text-balance">
               We design brands
               <br />
               that people <span className="italic text-accent">remember.</span>
             </h1>
 
-            <p className="mt-6 max-w-xl text-base md:text-lg text-muted-foreground leading-relaxed">
+            <p className="mt-4 sm:mt-6 max-w-xl text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
               Helping businesses grow through logo design, branding, packaging, advertising,
               website design and digital creative solutions.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <button
                 onClick={() => onNavigate('/portfolio')}
-                className="group inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground hover:bg-accent transition-colors cursor-pointer"
+                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground hover:bg-accent transition-colors cursor-pointer w-full sm:w-auto"
               >
                 View Portfolio
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </button>
               <button
                 onClick={() => onNavigate('/contact')}
-                className="group inline-flex items-center gap-2 rounded-lg border border-border bg-background px-6 py-3.5 text-sm font-medium hover:border-primary transition-colors cursor-pointer"
+                className="group inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-background px-6 py-3.5 text-sm font-medium hover:border-primary transition-colors cursor-pointer w-full sm:w-auto"
               >
                 Start Your Project
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -168,28 +168,28 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </div>
 
             {/* Social Proof */}
-            <div className="mt-10 flex items-center gap-6 text-sm text-muted-foreground">
+            <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-muted-foreground">
               <div className="flex -space-x-2">
                 <span
-                  className="grid h-9 w-9 place-items-center rounded-full border-2 border-background font-display text-xs font-bold text-white shadow-xs"
+                  className="grid h-8 w-8 sm:h-9 sm:w-9 place-items-center rounded-full border-2 border-background font-display text-xs font-bold text-white shadow-xs"
                   style={{ background: '#ef3c67' }}
                 >
                   N
                 </span>
                 <span
-                  className="grid h-9 w-9 place-items-center rounded-full border-2 border-background font-display text-xs font-bold text-white shadow-xs"
+                  className="grid h-8 w-8 sm:h-9 sm:w-9 place-items-center rounded-full border-2 border-background font-display text-xs font-bold text-white shadow-xs"
                   style={{ background: '#111' }}
                 >
                   L
                 </span>
                 <span
-                  className="grid h-9 w-9 place-items-center rounded-full border-2 border-background font-display text-xs font-bold text-white shadow-xs"
+                  className="grid h-8 w-8 sm:h-9 sm:w-9 place-items-center rounded-full border-2 border-background font-display text-xs font-bold text-white shadow-xs"
                   style={{ background: '#c4654a' }}
                 >
                   T
                 </span>
                 <span
-                  className="grid h-9 w-9 place-items-center rounded-full border-2 border-background font-display text-xs font-bold text-white shadow-xs"
+                  className="grid h-8 w-8 sm:h-9 sm:w-9 place-items-center rounded-full border-2 border-background font-display text-xs font-bold text-white shadow-xs"
                   style={{ background: '#4a6741' }}
                 >
                   M
@@ -197,17 +197,17 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </div>
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-accent text-accent" />
+                  <Star key={i} className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-accent text-accent" />
                 ))}
-                <span className="ml-2 font-medium">
+                <span className="ml-2 text-xs sm:text-sm font-medium">
                   <strong className="text-foreground">1000+</strong> happy clients
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Right Floating Composition Col */}
-          <div className="lg:col-span-5 relative min-h-[400px] sm:min-h-[460px] lg:min-h-[560px] max-w-sm sm:max-w-md lg:max-w-none mx-auto w-full">
+          {/* Right Floating Composition Col (Shown on Desktop) */}
+          <div className="hidden lg:block lg:col-span-5 relative min-h-[560px] w-full">
             <div className="relative h-full w-full">
               {/* Card 1: Browser UI */}
               <div className="absolute rounded-2xl border border-border bg-background shadow-soft overflow-hidden top-2 right-4 w-64 h-40 animate-float">
@@ -416,14 +416,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 onClick={() => onNavigate('/portfolio')}
                 className="group block h-full cursor-pointer"
               >
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] md:aspect-auto md:h-full min-h-[320px] bg-muted">
+                <div className="relative isolate overflow-hidden rounded-2xl aspect-[4/3] md:aspect-auto md:h-full min-h-[320px] bg-muted w-full">
                   <img
                     src={featuredProjects[0].image}
                     alt={featuredProjects[0].title}
                     loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="absolute inset-0 h-full w-full rounded-2xl object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                   {/* Hover content */}
                   <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
@@ -464,14 +464,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('/portfolio')}
                   className="group block h-full cursor-pointer"
                 >
-                  <div className="relative overflow-hidden rounded-2xl aspect-[4/3] min-h-[260px] bg-muted">
+                  <div className="relative isolate overflow-hidden rounded-2xl aspect-[4/3] min-h-[260px] bg-muted w-full">
                     <img
                       src={project.image}
                       alt={project.title}
                       loading="lazy"
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="absolute inset-0 h-full w-full rounded-2xl object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                     {/* Hover content */}
                     <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
@@ -615,41 +615,41 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 9. CTA BANNER */}
-      <section className="py-24 md:py-32">
+      <section className="py-12 sm:py-24 md:py-32">
         <div className="container-x">
-          <div className="relative overflow-hidden rounded-3xl bg-primary text-primary-foreground p-7 sm:p-12 md:p-20 text-center">
+          <div className="relative overflow-hidden rounded-3xl bg-primary text-primary-foreground p-6 sm:p-12 md:p-20 text-center">
             {/* Glowing background orbs */}
             <div
               aria-hidden="true"
-              className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-accent/40 blur-3xl animate-blob"
+              className="absolute -top-24 -left-24 h-64 w-64 sm:h-96 sm:w-96 rounded-full bg-accent/40 blur-3xl animate-blob"
             />
             <div
               aria-hidden="true"
-              className="absolute -bottom-32 -right-24 h-96 w-96 rounded-full bg-accent/20 blur-3xl animate-blob"
+              className="absolute -bottom-32 -right-24 h-64 w-64 sm:h-96 sm:w-96 rounded-full bg-accent/20 blur-3xl animate-blob"
             />
 
             <div className="relative z-10">
               <div className="text-xs uppercase tracking-widest text-primary-foreground/60 font-semibold">
                 Let's build together
               </div>
-              <h2 className="mt-4 font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-balance">
+              <h2 className="mt-4 font-display text-2xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-balance">
                 Ready to build your brand?
               </h2>
-              <p className="mt-6 max-w-xl mx-auto text-primary-foreground/75 text-base md:text-lg leading-relaxed">
+              <p className="mt-4 sm:mt-6 max-w-xl mx-auto text-primary-foreground/75 text-sm sm:text-base md:text-lg leading-relaxed">
                 Let's create something amazing together. Book a free 30-minute consultation with our
                 creative directors.
               </p>
 
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
                 <button
                   onClick={() => onNavigate('/contact')}
-                  className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-sm font-medium text-accent-foreground hover:opacity-90 transition-opacity cursor-pointer shadow-md"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-sm font-medium text-accent-foreground hover:opacity-90 transition-opacity cursor-pointer shadow-md w-full sm:w-auto"
                 >
                   Get Free Consultation <ArrowRight className="h-4 w-4" />
                 </button>
                 <button
                   onClick={() => onNavigate('/portfolio')}
-                  className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-medium hover:bg-white/10 transition-colors cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-medium hover:bg-white/10 transition-colors cursor-pointer w-full sm:w-auto"
                 >
                   Explore work
                 </button>
