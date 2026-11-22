@@ -184,6 +184,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <a href="#terms" className="hover:text-foreground transition-colors">
               Terms
             </a>
+            <a
+              href="/admin"
+              onClick={(e) => handleNavClick('/admin', e)}
+              className="hover:text-foreground transition-colors opacity-70 hover:opacity-100"
+            >
+              Admin
+            </a>
             <button
               onClick={scrollToTop}
               className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors cursor-pointer"

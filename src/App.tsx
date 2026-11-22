@@ -13,9 +13,17 @@ import { AdminLoginPage } from './pages/AdminLoginPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { ContentProvider } from './context/ContentContext';
 
+// Helper to normalize path by stripping trailing slashes
+const normalizePath = (path: string): string => {
+  if (!path) return '/';
+  // Strip query string and hash if present in pathname
+  const clean = path.split('?')[0].split('#')[0].replace(/\/+$/, '');
+  return clean === '' ? '/' : clean;
+};
+
 export const App: React.FC = () => {
   const [currentPath, setCurrentPath] = useState<string>(() => {
-    return window.location.pathname || '/';
+    return normalizePath(window.location.pathname || '/');
   });
 
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(() => {
@@ -26,16 +34,17 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     const handlePopState = () => {
-      setCurrentPath(window.location.pathname || '/');
+      setCurrentPath(normalizePath(window.location.pathname || '/'));
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   const navigate = (path: string) => {
-    if (path !== currentPath) {
-      window.history.pushState({}, '', path);
-      setCurrentPath(path);
+    const target = normalizePath(path);
+    if (target !== currentPath) {
+      window.history.pushState({}, '', target);
+      setCurrentPath(target);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -55,39 +64,27 @@ export const App: React.FC = () => {
   };
 
   const renderPage = () => {
-    switch (currentPath) {
-      case '/admin':
-        if (isAdminAuthenticated) {
-          return (
-            <AdminDashboardPage
-              onLogout={handleLogout}
-              onNavigateHome={() => navigate('/')}
-            />
-          );
-        }
-        return (
-          <AdminLoginPage
-            onLoginSuccess={handleLoginSuccess}
-            onNavigateHome={() => navigate('/')}
-          />
-        );
+    const path = normalizePath(currentPath);
 
-      case '/admin/dashboard':
-        if (!isAdminAuthenticated) {
-          return (
-            <AdminLoginPage
-              onLoginSuccess={handleLoginSuccess}
-              onNavigateHome={() => navigate('/')}
-            />
-          );
-        }
+    // Any admin route: /admin, /admin/, /admin/dashboard, etc.
+    if (path.startsWith('/admin')) {
+      if (isAdminAuthenticated) {
         return (
           <AdminDashboardPage
             onLogout={handleLogout}
             onNavigateHome={() => navigate('/')}
           />
         );
+      }
+      return (
+        <AdminLoginPage
+          onLoginSuccess={handleLoginSuccess}
+          onNavigateHome={() => navigate('/')}
+        />
+      );
+    }
 
+    switch (path) {
       case '/about':
         return <AboutPage />;
       case '/services':
