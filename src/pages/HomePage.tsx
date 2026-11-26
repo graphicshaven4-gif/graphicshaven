@@ -3,18 +3,9 @@ import {
   ArrowRight,
   ArrowUpRight,
   Star,
-  PenTool,
-  Sparkles,
-  Package,
-  Monitor,
-  Megaphone,
-  BookOpen,
-  Share2,
-  Printer,
-  Image,
   Check,
-  Code2,
 } from 'lucide-react';
+import { ServiceIcon } from '../components/ServiceIcon';
 import { useContent } from '../context/ContentContext';
 
 interface HomePageProps {
@@ -25,33 +16,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { services, portfolio, clients, testimonials } = useContent();
   const featuredServices = services.slice(0, 9);
   const featuredProjects = portfolio.slice(0, 6);
-
-  const getServiceIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'Code2':
-        return <Code2 className="h-5 w-5" />;
-      case 'PenTool':
-        return <PenTool className="h-5 w-5" />;
-      case 'Sparkles':
-        return <Sparkles className="h-5 w-5" />;
-      case 'Package':
-        return <Package className="h-5 w-5" />;
-      case 'Monitor':
-        return <Monitor className="h-5 w-5" />;
-      case 'Megaphone':
-        return <Megaphone className="h-5 w-5" />;
-      case 'BookOpen':
-        return <BookOpen className="h-5 w-5" />;
-      case 'Share2':
-        return <Share2 className="h-5 w-5" />;
-      case 'Printer':
-        return <Printer className="h-5 w-5" />;
-      case 'Image':
-        return <Image className="h-5 w-5" />;
-      default:
-        return <Sparkles className="h-5 w-5" />;
-    }
-  };
 
   const whyChooseUs = [
     {
@@ -370,7 +334,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 >
                   <div className="flex items-start justify-between">
                     <div className="grid h-12 w-12 place-items-center rounded-xl bg-surface group-hover:bg-white/10 text-foreground group-hover:text-primary-foreground transition-colors">
-                      {getServiceIcon(service.iconName)}
+                      <ServiceIcon iconName={service.iconName} />
                     </div>
                     <ArrowUpRight className="h-5 w-5 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
                   </div>

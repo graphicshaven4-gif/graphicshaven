@@ -2,7 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, X, ChevronLeft, ChevronRight, Maximize2, ExternalLink } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
 import { useContent } from '../context/ContentContext';
+import { PORTFOLIO_CATEGORIES } from '../data/mockData';
 import { PortfolioProject } from '../types';
+
+const CATEGORY_ALIASES: Record<string, string[]> = {
+  'Web & UI Design': ['web & ui design', 'website', 'web development', 'ui ux'],
+  'Advertising & Promotional Design': ['advertising & promotional design', 'advertising', 'poster'],
+  Brochures: ['brochures', 'brochure'],
+  'Social Media Creatives': ['social media creatives', 'social media'],
+  Flyers: ['flyers', 'flyer'],
+  'Business Card Design': ['business card design', 'business card'],
+  'Tent Design (Canopy)': ['tent design (canopy)', 'tent design', 'canopy'],
+};
 
 export const PortfolioPage: React.FC = () => {
   const { portfolio } = useContent();
@@ -10,23 +21,17 @@ export const PortfolioPage: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<PortfolioProject | null>(null);
   const [isFullView, setIsFullView] = useState(false);
 
-  const categories = [
-    'All',
-    'Logo',
-    'Brand Identity',
-    'Packaging',
-    'Website',
-    'Web Development',
-    'Advertising',
-    'Brochure',
-    'Poster',
-    'UI UX',
-  ];
+  const categories = ['All', ...PORTFOLIO_CATEGORIES];
 
   const filteredProjects =
     activeCategory === 'All'
       ? portfolio
-      : portfolio.filter((p) => p.category.toLowerCase() === activeCategory.toLowerCase());
+      : portfolio.filter((p) => {
+          const cat = p.category.trim().toLowerCase();
+          const target = activeCategory.toLowerCase();
+          const aliases = CATEGORY_ALIASES[activeCategory] || [target];
+          return cat === target || aliases.includes(cat);
+        });
 
   const currentIndex = selectedProject
     ? filteredProjects.findIndex((p) => p.id === selectedProject.id)

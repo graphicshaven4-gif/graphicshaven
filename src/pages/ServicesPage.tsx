@@ -1,22 +1,7 @@
 import React from 'react';
-import {
-  ArrowUpRight,
-  PenTool,
-  Sparkles,
-  Package,
-  Monitor,
-  Megaphone,
-  BookOpen,
-  Share2,
-  Printer,
-  Image,
-  FileText,
-  CreditCard,
-  Film,
-  Layers,
-  Code2,
-} from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
+import { ServiceIcon } from '../components/ServiceIcon';
 import { useContent } from '../context/ContentContext';
 
 interface ServicesPageProps {
@@ -25,40 +10,6 @@ interface ServicesPageProps {
 
 export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
   const { services } = useContent();
-  const getServiceIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'Code2':
-        return <Code2 className="h-5 w-5" />;
-      case 'PenTool':
-        return <PenTool className="h-5 w-5" />;
-      case 'Sparkles':
-        return <Sparkles className="h-5 w-5" />;
-      case 'Package':
-        return <Package className="h-5 w-5" />;
-      case 'Monitor':
-        return <Monitor className="h-5 w-5" />;
-      case 'Megaphone':
-        return <Megaphone className="h-5 w-5" />;
-      case 'BookOpen':
-        return <BookOpen className="h-5 w-5" />;
-      case 'Share2':
-        return <Share2 className="h-5 w-5" />;
-      case 'Printer':
-        return <Printer className="h-5 w-5" />;
-      case 'Image':
-        return <Image className="h-5 w-5" />;
-      case 'FileText':
-        return <FileText className="h-5 w-5" />;
-      case 'CreditCard':
-        return <CreditCard className="h-5 w-5" />;
-      case 'Film':
-        return <Film className="h-5 w-5" />;
-      case 'Layers':
-        return <Layers className="h-5 w-5" />;
-      default:
-        return <Sparkles className="h-5 w-5" />;
-    }
-  };
 
   return (
     <div className="flex-1">
@@ -80,7 +31,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
               >
                 <div className="flex items-start justify-between">
                   <div className="grid h-12 w-12 place-items-center rounded-xl bg-surface group-hover:bg-white/10 text-foreground group-hover:text-primary-foreground transition-colors">
-                    {getServiceIcon(service.iconName)}
+                    {<ServiceIcon iconName={service.iconName} />}
                   </div>
                   <ArrowUpRight className="h-5 w-5 opacity-40 group-hover:opacity-100 transition-opacity" />
                 </div>

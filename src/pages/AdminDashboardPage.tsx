@@ -24,6 +24,8 @@ import {
 } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
 import { ImageUpload } from '../components/ImageUpload';
+import { ServiceIcon } from '../components/ServiceIcon';
+import { PORTFOLIO_CATEGORIES, servicesData } from '../data/mockData';
 import { API_BASE_URL } from '../config/api';
 
 interface AdminDashboardPageProps {
@@ -195,7 +197,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
 
   const [portfolioForm, setPortfolioForm] = useState({
     title: '',
-    category: 'Website',
+    category: 'Logo',
     year: '2026',
     description: '',
     image: '',
@@ -257,7 +259,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
     } else if (type === 'portfolio') {
       setPortfolioForm({
         title: '',
-        category: 'Web Development',
+        category: 'Logo',
         year: new Date().getFullYear().toString(),
         description: '',
         image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
@@ -843,7 +845,25 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
         {/* ========================================================= */}
         {/* 2. SERVICES TAB */}
         {/* ========================================================= */}
-        {activeTab === 'services' && (
+        {activeTab === 'services' && (() => {
+          const existingTitles = new Set(services.map((s) => s.title.trim().toLowerCase()));
+          const missingStandardServices = servicesData.filter(
+            (s) => !existingTitles.has(s.title.trim().toLowerCase())
+          );
+
+          const handleSyncStandardServices = async () => {
+            for (const item of missingStandardServices) {
+              await addService({
+                title: item.title,
+                tagline: item.tagline,
+                iconName: item.iconName,
+                slug: item.slug,
+              });
+            }
+            showToast(`Added ${missingStandardServices.length} standard service(s).`);
+          };
+
+          return (
           <div className="space-y-6 animate-fade-in">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
@@ -852,12 +872,22 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                   Manage agency offerings displayed on the Services page and Homepage.
                 </p>
               </div>
-              <button
-                onClick={() => handleOpenAdd('services')}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors shadow-xs cursor-pointer"
-              >
-                <Plus className="h-4 w-4" /> Add Service
-              </button>
+              <div className="flex flex-wrap items-center gap-2">
+                {missingStandardServices.length > 0 && (
+                  <button
+                    onClick={handleSyncStandardServices}
+                    className="inline-flex items-center gap-2 rounded-xl border border-accent bg-accent/10 text-accent px-4 py-2.5 text-xs font-semibold hover:bg-accent hover:text-white transition-colors shadow-xs cursor-pointer"
+                  >
+                    <RefreshCw className="h-4 w-4" /> Add {missingStandardServices.length} Missing Services
+                  </button>
+                )}
+                <button
+                  onClick={() => handleOpenAdd('services')}
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors shadow-xs cursor-pointer"
+                >
+                  <Plus className="h-4 w-4" /> Add Service
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -869,7 +899,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="grid h-10 w-10 place-items-center rounded-xl bg-surface border border-border text-accent">
-                        <Sparkles className="h-4 w-4" />
+                        <ServiceIcon iconName={service.iconName} className="h-4 w-4" />
                       </span>
                       <div className="flex items-center gap-1.5">
                         <button
@@ -903,7 +933,8 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
               ))}
             </div>
           </div>
-        )}
+          );
+        })()}
 
         {/* ========================================================= */}
         {/* 3. PORTFOLIO TAB */}
@@ -1210,13 +1241,40 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                 <>
                   <div>
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      Quick Select Service Preset
+                    </label>
+                    <select
+                      value=""
+                      onChange={(e) => {
+                        const preset = servicesData.find((s) => s.title === e.target.value);
+                        if (preset) {
+                          setServiceForm({
+                            title: preset.title,
+                            tagline: preset.tagline,
+                            iconName: preset.iconName,
+                            slug: preset.slug,
+                          });
+                        }
+                      }}
+                      className="mt-1.5 w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm focus:border-accent focus:outline-hidden"
+                    >
+                      <option value="">Choose a standard service category (optional)...</option>
+                      {servicesData.map((preset) => (
+                        <option key={preset.id} value={preset.title}>
+                          {preset.title}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                       Service Title *
                     </label>
                     <input
                       required
                       value={serviceForm.title}
                       onChange={(e) => setServiceForm({ ...serviceForm, title: e.target.value })}
-                      placeholder="e.g. Web Development"
+                      placeholder="e.g. Tent Design (Canopy)"
                       className="mt-1.5 w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm focus:border-accent focus:outline-hidden"
                     />
                   </div>
@@ -1228,7 +1286,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                       required
                       value={serviceForm.tagline}
                       onChange={(e) => setServiceForm({ ...serviceForm, tagline: e.target.value })}
-                      placeholder="e.g. High-performance full-stack web apps."
+                      placeholder="e.g. Custom branded event canopies & tents."
                       className="mt-1.5 w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm focus:border-accent focus:outline-hidden"
                     />
                   </div>
@@ -1241,13 +1299,20 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                       onChange={(e) => setServiceForm({ ...serviceForm, iconName: e.target.value })}
                       className="mt-1.5 w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm focus:border-accent focus:outline-hidden"
                     >
-                      <option value="Sparkles">Sparkles (Identity)</option>
-                      <option value="Code2">Code2 (Web Development)</option>
-                      <option value="Monitor">Monitor (Website)</option>
                       <option value="PenTool">PenTool (Logo)</option>
+                      <option value="Sparkles">Sparkles (Brand Identity)</option>
                       <option value="Package">Package (Packaging)</option>
-                      <option value="Megaphone">Megaphone (Advertising)</option>
+                      <option value="Monitor">Monitor (Web &amp; UI Design)</option>
+                      <option value="Megaphone">Megaphone (Advertising &amp; Promotional Design)</option>
+                      <option value="BookOpen">BookOpen (Brochures)</option>
+                      <option value="Share2">Share2 (Social Media Creatives)</option>
+                      <option value="FileText">FileText (Flyers)</option>
+                      <option value="CreditCard">CreditCard (Business Card Design)</option>
+                      <option value="Tent">Tent (Tent Design / Canopy)</option>
+                      <option value="Code2">Code2 (Web Development)</option>
                       <option value="Layers">Layers (UI/UX)</option>
+                      <option value="Printer">Printer (Print)</option>
+                      <option value="Image">Image (Poster)</option>
                       <option value="Film">Film (Motion)</option>
                     </select>
                   </div>
@@ -1279,14 +1344,15 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                         onChange={(e) => setPortfolioForm({ ...portfolioForm, category: e.target.value })}
                         className="mt-1.5 w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm focus:border-accent focus:outline-hidden"
                       >
-                        <option>Logo</option>
-                        <option>Brand Identity</option>
-                        <option>Packaging</option>
-                        <option>Website</option>
-                        <option>Web Development</option>
-                        <option>UI UX</option>
-                        <option>Advertising</option>
-                        <option>Poster</option>
+                        {!PORTFOLIO_CATEGORIES.includes(portfolioForm.category as any) &&
+                          portfolioForm.category && (
+                            <option value={portfolioForm.category}>{portfolioForm.category}</option>
+                          )}
+                        {PORTFOLIO_CATEGORIES.map((cat) => (
+                          <option key={cat} value={cat}>
+                            {cat}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div>
