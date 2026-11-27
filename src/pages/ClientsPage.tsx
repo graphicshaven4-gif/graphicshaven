@@ -1,9 +1,35 @@
+import React, { useState } from 'react';
 import { PageHero } from '../components/PageHero';
 import { useContent } from '../context/ContentContext';
+import { ClientItem } from '../types';
 
 interface ClientsPageProps {
   onNavigate: (path: string) => void;
 }
+
+const ClientLogoDisplay: React.FC<{ client: ClientItem }> = ({ client }) => {
+  const [imgError, setImgError] = useState(false);
+  const logoUrl = client.image || client.logo;
+
+  if (logoUrl && !imgError) {
+    return (
+      <div className="h-12 w-28 flex items-center justify-center p-1 overflow-hidden">
+        <img
+          src={logoUrl}
+          alt={client.name}
+          onError={() => setImgError(true)}
+          className="max-h-10 max-w-full object-contain filter transition-all duration-300 hover:scale-105"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <span className="grid h-10 w-10 place-items-center rounded-xl bg-surface border border-border text-accent text-sm font-bold font-mono">
+      {client.initials || client.name.slice(0, 2).toUpperCase()}
+    </span>
+  );
+};
 
 export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigate }) => {
   const { clients, portfolio } = useContent();
@@ -42,9 +68,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigate }) => {
               key={client.id}
               className="bg-background aspect-[3/2] flex flex-col items-center justify-center p-4 md:p-6 text-center hover:bg-surface transition-colors"
             >
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-surface border border-border text-accent text-sm font-bold font-mono">
-                {client.initials}
-              </span>
+              <ClientLogoDisplay client={client} />
               <span className="mt-2 text-xs font-semibold text-foreground font-display">
                 {client.name}
               </span>

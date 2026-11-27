@@ -11,6 +11,7 @@ import { BlogPage } from './pages/BlogPage';
 import { ContactPage } from './pages/ContactPage';
 import { AdminLoginPage } from './pages/AdminLoginPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
+import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ContentProvider } from './context/ContentContext';
 
 // Helper to normalize path by stripping trailing slashes
@@ -25,6 +26,22 @@ export const App: React.FC = () => {
   const [currentPath, setCurrentPath] = useState<string>(() => {
     return normalizePath(window.location.pathname || '/');
   });
+
+  const [showIntro, setShowIntro] = useState<boolean>(() => {
+    const initialPath = normalizePath(window.location.pathname || '/');
+    return !initialPath.startsWith('/admin');
+  });
+  const [introFading, setIntroFading] = useState(false);
+
+  useEffect(() => {
+    if (!showIntro) return;
+    const fadeTimer = setTimeout(() => setIntroFading(true), 1750);
+    const hideTimer = setTimeout(() => setShowIntro(false), 2150);
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(hideTimer);
+    };
+  }, [showIntro]);
 
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(() => {
     return !!(
@@ -109,10 +126,36 @@ export const App: React.FC = () => {
 
   return (
     <ContentProvider>
+      {showIntro && !isAdminRoute && (
+        <div
+          className={`fixed inset-0 z-[100] flex items-center justify-center bg-background transition-opacity duration-400 ${
+            introFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}
+          aria-hidden="true"
+        >
+          <div className="flex flex-col items-center gap-4 px-6">
+            <img
+              src="/logo.svg"
+              alt="Graphics Haven"
+              width="320"
+              height="115"
+              className="w-[240px] sm:w-[320px] h-auto object-contain animate-logo-zoom"
+            />
+          </div>
+        </div>
+      )}
+
       <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-accent selection:text-white">
         {!isAdminRoute && <Navbar currentPath={currentPath} onNavigate={navigate} />}
-        <main className="flex-1 flex flex-col">{renderPage()}</main>
+        <main
+          className={`flex-1 flex flex-col ${!isAdminRoute ? 'pt-16 md:pt-20' : ''} ${
+            !showIntro && !isAdminRoute ? 'animate-home-reveal' : ''
+          }`}
+        >
+          {renderPage()}
+        </main>
         {!isAdminRoute && <Footer onNavigate={navigate} />}
+        {!isAdminRoute && <FloatingWhatsApp />}
       </div>
     </ContentProvider>
   );

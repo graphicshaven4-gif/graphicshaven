@@ -270,9 +270,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               key={idx}
               className="flex items-center gap-3 px-4 py-2 rounded-xl bg-background border border-border/80 text-foreground font-display font-semibold text-lg tracking-tight shadow-xs hover:border-primary transition-colors cursor-pointer select-none"
             >
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-surface text-accent text-xs font-bold font-mono">
-                {client.initials}
-              </span>
+              {client.image || client.logo ? (
+                <img
+                  src={client.image || client.logo}
+                  alt={client.name}
+                  onError={(e) => {
+                    (e.target as HTMLElement).style.display = 'none';
+                  }}
+                  className="h-8 w-8 rounded-lg object-contain bg-surface p-0.5"
+                />
+              ) : (
+                <span className="grid h-8 w-8 place-items-center rounded-lg bg-surface text-accent text-xs font-bold font-mono">
+                  {client.initials}
+                </span>
+              )}
               <span>{client.name}</span>
             </div>
           ))}

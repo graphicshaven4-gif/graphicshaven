@@ -83,3 +83,37 @@
   border-color: var(--accent);
   box-shadow: 0 0 0 2px rgba(239, 60, 103, 0.15);
 }
+
+@keyframes logoZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes homeReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-logo-zoom {
+  animation: logoZoomIn 1.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-home-reveal {
+  animation: homeReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}

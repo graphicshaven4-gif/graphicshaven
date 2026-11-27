@@ -208,6 +208,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
     name: '',
     initials: '',
     category: 'Technology',
+    image: '',
   });
 
   const [testimonialForm, setTestimonialForm] = useState({
@@ -270,6 +271,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
         name: '',
         initials: '',
         category: 'Creative',
+        image: '',
       });
     } else if (type === 'testimonials') {
       setTestimonialForm({
@@ -318,6 +320,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
         name: item.name,
         initials: item.initials,
         category: item.category,
+        image: item.image || item.logo || '',
       });
     } else if (type === 'testimonials') {
       setTestimonialForm({
@@ -365,11 +368,17 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
       }
     } else if (modalType === 'clients') {
       const initials = clientForm.initials || clientForm.name.slice(0, 2).toUpperCase();
+      const clientPayload = {
+        ...clientForm,
+        initials,
+        image: clientForm.image,
+        logo: clientForm.image,
+      };
       if (editingItem) {
-        await updateClient(editingItem.id, { ...clientForm, initials });
+        await updateClient(editingItem.id, clientPayload);
         showToast(`Client "${clientForm.name}" updated.`);
       } else {
-        await addClient({ ...clientForm, initials });
+        await addClient(clientPayload);
         showToast(`Client "${clientForm.name}" created.`);
       }
     } else if (modalType === 'testimonials') {
@@ -1055,9 +1064,22 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                     </button>
                   </div>
 
-                  <span className="grid h-12 w-12 place-items-center rounded-xl bg-surface border border-border text-accent font-display text-base font-bold font-mono">
-                    {client.initials}
-                  </span>
+                  {client.image || client.logo ? (
+                    <div className="h-14 w-24 rounded-xl bg-surface border border-border p-1.5 flex items-center justify-center overflow-hidden">
+                      <img
+                        src={client.image || client.logo}
+                        alt={client.name}
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = 'none';
+                        }}
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <span className="grid h-12 w-12 place-items-center rounded-xl bg-surface border border-border text-accent font-display text-base font-bold font-mono">
+                      {client.initials}
+                    </span>
+                  )}
 
                   <div className="mt-3">
                     <h4 className="font-display font-semibold text-sm text-foreground">
@@ -1413,6 +1435,11 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                       className="mt-1.5 w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm focus:border-accent focus:outline-hidden"
                     />
                   </div>
+                  <ImageUpload
+                    label="Client Logo / Image"
+                    value={clientForm.image}
+                    onChange={(url) => setClientForm({ ...clientForm, image: url })}
+                  />
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">

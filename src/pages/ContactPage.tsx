@@ -1,7 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { ArrowRight, Mail, Phone, MapPin, MessageCircle, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
+import { PORTFOLIO_CATEGORIES } from '../data/mockData';
 import { API_BASE_URL } from '../config/api';
+
+const WHATSAPP_NUMBER = '918778139593';
 
 export const ContactPage: React.FC = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -17,6 +20,19 @@ export const ContactPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [whatsappUrl, setWhatsappUrl] = useState('');
+
+  const buildWhatsAppUrl = () => {
+    const lines = [
+      '*New Project Inquiry — Graphics Haven*',
+      `*Name:* ${formData.name}`,
+      `*Phone:* ${formData.phone || 'Not provided'}`,
+      `*Email:* ${formData.email}`,
+      `*Service:* ${formData.service || 'General Inquiry'}`,
+      `*Project Details:* ${formData.details || 'No details provided'}`,
+    ];
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +40,12 @@ export const ContactPage: React.FC = () => {
 
     setLoading(true);
     setErrorMessage('');
+
+    const waUrl = buildWhatsAppUrl();
+    setWhatsappUrl(waUrl);
+
+    // Open WhatsApp with pre-filled lead message in input box
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
 
     const payload = {
       ...formData,
@@ -130,22 +152,36 @@ export const ContactPage: React.FC = () => {
                 Thank you for reaching out, {formData.name}. Our creative directors have received
                 your brief and will review your project details shortly.
               </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setSubmitted(false);
-                  setFormData({
-                    name: '',
-                    phone: '',
-                    email: '',
-                    service: '',
-                    details: '',
-                  });
-                }}
-                className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-accent transition-colors cursor-pointer"
-              >
-                Send Another Note
-              </button>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                {whatsappUrl && (
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition-opacity cursor-pointer"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    Send on WhatsApp
+                  </a>
+                )}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSubmitted(false);
+                    setWhatsappUrl('');
+                    setFormData({
+                      name: '',
+                      phone: '',
+                      email: '',
+                      service: '',
+                      details: '',
+                    });
+                  }}
+                  className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-accent transition-colors cursor-pointer"
+                >
+                  Send Another Note
+                </button>
+              </div>
             </div>
           ) : (
             <form ref={formRef} onSubmit={handleSubmit}>
@@ -216,14 +252,12 @@ export const ContactPage: React.FC = () => {
                       className="input"
                     >
                       <option value="">Select a service</option>
-                      <option>Logo Design</option>
-                      <option>Brand Identity</option>
-                      <option>Packaging</option>
-                      <option>Website Design</option>
-                      <option>Web Development</option>
-                      <option>Advertising</option>
-                      <option>UI UX</option>
-                      <option>Other</option>
+                      {PORTFOLIO_CATEGORIES.map((category) => (
+                        <option key={category} value={category}>
+                          {category}
+                        </option>
+                      ))}
+                      <option value="Other">Other</option>
                     </select>
                   </div>
                 </label>
@@ -302,10 +336,10 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <div className="text-xs text-muted-foreground uppercase font-semibold">Direct Phone</div>
                   <a
-                    href="tel:+919876543210"
+                    href="tel:+918778139593"
                     className="font-medium text-foreground hover:text-accent transition-colors"
                   >
-                    +91 98765 43210
+                    +91 87781 39593
                   </a>
                 </div>
               </div>
@@ -329,7 +363,7 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <div className="text-xs text-muted-foreground uppercase font-semibold">Instant Chat</div>
                   <a
-                    href="https://wa.me/919876543210"
+                    href="https://wa.me/918778139593"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-medium text-foreground hover:text-accent transition-colors"

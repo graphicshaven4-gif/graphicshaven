@@ -164,7 +164,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <a href="mailto:graphicshaven4@gmail.com">graphicshaven4@gmail.com</a>
             </li>
             <li className="hover:text-foreground transition-colors">
-              <a href="tel:+919876543210">+91 98765 43210</a>
+              <a href="tel:+918778139593">+91 87781 39593</a>
             </li>
             <li className="leading-relaxed">
               312, al hanifa complex, mannadi, chennai.

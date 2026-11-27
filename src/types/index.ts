@@ -30,6 +30,8 @@ export interface ClientItem {
   name: string;
   initials: string;
   category: string;
+  image?: string;
+  logo?: string;
 }
 
 export interface Milestone {
