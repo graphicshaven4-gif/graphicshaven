@@ -5,7 +5,6 @@ import {
   Inbox,
   Users,
   ArrowUpRight,
-  Shield,
   ExternalLink,
   Plus,
   Trash2,
@@ -40,7 +39,6 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
   onNavigateHome,
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
-  const [adminUser, setAdminUser] = useState<any>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Content Context
@@ -227,18 +225,6 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
     category: 'Brand Strategy',
     image: '',
   });
-
-  useEffect(() => {
-    const stored =
-      localStorage.getItem('gh_admin_user') || sessionStorage.getItem('gh_admin_user');
-    if (stored) {
-      try {
-        setAdminUser(JSON.parse(stored));
-      } catch (e) {
-        // ignore
-      }
-    }
-  }, []);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -449,25 +435,20 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
       {/* Top Admin Sub-bar */}
       <div className="border-b border-border bg-background sticky top-0 z-30 shadow-xs">
         <div className="container-x py-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground font-display font-bold">
-              {adminUser?.name ? adminUser.name.charAt(0) : 'A'}
-            </span>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-base font-semibold font-display text-foreground">
-                  {adminUser?.name || 'Administrator'}
-                </h2>
-                <span className="inline-flex items-center gap-1 rounded-full bg-accent/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent">
-                  <Shield className="h-3 w-3" />
-                  {adminUser?.role || 'SUPERADMIN'}
-                </span>
-              </div>
-              <div className="text-xs text-muted-foreground">
-                {adminUser?.email || 'admin@graphicshaven.in'}
-              </div>
-            </div>
-          </div>
+          <button
+            type="button"
+            onClick={onNavigateHome}
+            className="flex items-center gap-3 hover:opacity-85 transition-opacity cursor-pointer"
+            title="Return to website"
+          >
+            <img
+              src="/logo.png"
+              alt="Graphics Haven"
+              width="200"
+              height="68"
+              className="h-9 sm:h-10 w-auto object-contain"
+            />
+          </button>
 
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             <button

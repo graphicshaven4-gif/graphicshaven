@@ -27,11 +27,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             className="flex items-center gap-2"
           >
             <img
-              src="/logo.svg"
+              src="/logo.png"
               alt="Graphics Haven"
               width="280"
               height="100"
-              className="w-[200px] h-auto object-contain"
+              className="w-[180px] h-auto object-contain"
             />
           </a>
           <p className="mt-4 max-w-sm text-sm text-muted-foreground leading-relaxed">
@@ -50,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <Instagram className="h-4 w-4" />
             </a>
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/graphicshaven4"
               aria-label="Facebook"
               target="_blank"
               rel="noopener noreferrer"
@@ -164,7 +164,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <a href="mailto:graphicshaven4@gmail.com">graphicshaven4@gmail.com</a>
             </li>
             <li className="hover:text-foreground transition-colors">
-              <a href="tel:+918778139593">+91 87781 39593</a>
+              <a href="tel:+919499929589">+91 94 999 29 589</a>
             </li>
             <li className="leading-relaxed">
               312, al hanifa complex, mannadi, chennai.
@@ -176,20 +176,23 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       {/* Bottom Bar */}
       <div className="border-t border-border">
         <div className="container-x flex flex-col sm:flex-row items-center justify-between gap-4 py-6 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} Graphics Haven. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} Graphics Haven. All rights reserved. · Developed by{' '}
+            <a
+              href="https://luxedevcode.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-foreground hover:text-accent transition-colors underline-offset-4 hover:underline"
+            >
+              luxedevcode
+            </a>
+          </p>
           <div className="flex items-center gap-6">
             <a href="#privacy" className="hover:text-foreground transition-colors">
               Privacy
             </a>
             <a href="#terms" className="hover:text-foreground transition-colors">
               Terms
-            </a>
-            <a
-              href="/admin"
-              onClick={(e) => handleNavClick('/admin', e)}
-              className="hover:text-foreground transition-colors opacity-70 hover:opacity-100"
-            >
-              Admin
             </a>
             <button
               onClick={scrollToTop}

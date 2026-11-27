@@ -81,11 +81,11 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
               title="Return to website"
             >
               <img
-                src="/logo.svg"
+                src="/logo.png"
                 alt="Graphics Haven"
                 width="240"
                 height="80"
-                className="h-10 w-auto mx-auto object-contain"
+                className="h-12 w-auto mx-auto object-contain"
               />
             </button>
 

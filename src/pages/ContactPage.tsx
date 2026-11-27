@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { ArrowRight, Mail, Phone, MapPin, MessageCircle, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
-import { PORTFOLIO_CATEGORIES } from '../data/mockData';
+import { servicesData } from '../data/mockData';
 import { API_BASE_URL } from '../config/api';
 
-const WHATSAPP_NUMBER = '918778139593';
+const WHATSAPP_NUMBER = '919499929589';
 
 export const ContactPage: React.FC = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -252,9 +252,9 @@ export const ContactPage: React.FC = () => {
                       className="input"
                     >
                       <option value="">Select a service</option>
-                      {PORTFOLIO_CATEGORIES.map((category) => (
-                        <option key={category} value={category}>
-                          {category}
+                      {servicesData.map((srv) => (
+                        <option key={srv.id} value={srv.title}>
+                          {srv.title}
                         </option>
                       ))}
                       <option value="Other">Other</option>
@@ -336,10 +336,10 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <div className="text-xs text-muted-foreground uppercase font-semibold">Direct Phone</div>
                   <a
-                    href="tel:+918778139593"
+                    href="tel:+919499929589"
                     className="font-medium text-foreground hover:text-accent transition-colors"
                   >
-                    +91 87781 39593
+                    +91 94 999 29 589
                   </a>
                 </div>
               </div>
@@ -363,7 +363,7 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <div className="text-xs text-muted-foreground uppercase font-semibold">Instant Chat</div>
                   <a
-                    href="https://wa.me/918778139593"
+                    href="https://wa.me/919499929589"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-medium text-foreground hover:text-accent transition-colors"

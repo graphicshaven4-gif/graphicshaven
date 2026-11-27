@@ -135,7 +135,7 @@ export const App: React.FC = () => {
         >
           <div className="flex flex-col items-center gap-4 px-6">
             <img
-              src="/logo.svg"
+              src="/logo.png"
               alt="Graphics Haven"
               width="320"
               height="115"

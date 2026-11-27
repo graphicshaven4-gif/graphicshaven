@@ -22,13 +22,6 @@ export const servicesData: ServiceItem[] = [
     slug: '/services/logo',
   },
   {
-    id: 'brand-identity',
-    title: 'Brand Identity',
-    tagline: 'Complete visual systems.',
-    iconName: 'Sparkles',
-    slug: '/services/brand-identity',
-  },
-  {
     id: 'packaging',
     title: 'Packaging',
     tagline: 'Shelf-ready packaging.',
@@ -69,13 +62,6 @@ export const servicesData: ServiceItem[] = [
     tagline: 'High-impact flyers.',
     iconName: 'FileText',
     slug: '/services/flyers',
-  },
-  {
-    id: 'business-card-design',
-    title: 'Business Card Design',
-    tagline: 'First impressions, refined.',
-    iconName: 'CreditCard',
-    slug: '/services/business-card-design',
   },
   {
     id: 'tent-design-canopy',

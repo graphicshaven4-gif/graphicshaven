@@ -3,7 +3,7 @@ import React from 'react';
 export const FloatingWhatsApp: React.FC = () => {
   return (
     <a
-      href="https://wa.me/918778139593"
+      href="https://wa.me/919499929589"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"

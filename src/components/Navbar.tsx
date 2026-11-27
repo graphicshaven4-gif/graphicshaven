@@ -53,11 +53,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
           aria-label="Graphics Haven Home"
         >
           <img
-            src="/logo.svg"
+            src="/logo.png"
             alt="Graphics Haven"
             width="280"
             height="100"
-            className="w-[180px] sm:w-[220px] md:w-[260px] h-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+            className="w-[150px] sm:w-[180px] md:w-[200px] h-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
           />
         </a>
 
